@@ -2,9 +2,12 @@
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
+    <div className="font-sans bg-white dark:bg-gray-900 text-gray-950 dark:text-white  
+    transition duration-150 ease-in-out
+    flex flex-col items-center justify-items-center 
+    min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <div>
-        <h2>目前設計中</h2>
+        <h2>目前設計中2</h2>
       </div>
       {/* <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <Image
