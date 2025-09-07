@@ -1,12 +1,14 @@
 "use client"
 // 導入光暗切換按鈕
 import DarkModeButton from "./darkModeButton"
+import LangChange from "./langChange";
 
 import Image from "next/image";
 
 import { useState, useRef } from "react"
 import Link from "next/link";
 
+import { useTranslations } from "next-intl";
 
 export default function Menu(){
     // 從darkModeButton抓取是否為暗色模式
@@ -15,8 +17,6 @@ export default function Menu(){
     const [navbarOpen, setNavbarOpen] = useState<boolean>(false);
     // 選單開關冷卻 true = 冷卻完畢
     const openColdDown = useRef<boolean>(true)
-    
-
     // 轉換開啟狀態
     const changeOpen = (state?:boolean) =>{
         if(openColdDown.current === false)return ;
@@ -34,8 +34,10 @@ export default function Menu(){
             openColdDown.current = true;
         })
     }
+    // 導入語系
+    const t = useTranslations("menu")
+
     return (
-        // bg-gray-200 
         <header className={`bg-white dark:bg-gray-800 shadow text-gray-950 dark:text-white
         w-svw h-[var(--menuHeight)]
         fixed top-0 left-0 z-999
@@ -43,12 +45,13 @@ export default function Menu(){
         transition duration-500 ease-in-out
         px-[16px] md:p-0
         `}>
+            {/* 手機板的標題圖片 */}
             <div className="flex items-center justify-center md:hidden">
                 <Link href="/" onClick={()=>{changeOpen(false)}} >
-                    <Image src={darkMode?"/selficon/selficon_light.svg":"/selficon/selficon.svg"} width={40} height={40} alt="icon"></Image>
+                    <Image src={darkMode?"/selficon/selficon_light.svg":"/selficon/selficon.svg"} width={40} height={40} alt="icon" priority ></Image>
                 </Link>
             </div>
-
+            {/* 電腦版的menu 會覆蓋手機板的menu (在手機板會跑到右側) */}
             <nav className={`bg-white dark:bg-gray-800 shadow
                 w-full h-svh md:h-[var(--menuHeight)] fixed md:relative top-0 right-0 md:right-full md:translate-x-full
                 flex flex-col md:flex-row  items-center justify-start md:justify-between gap-[8px] 
@@ -58,7 +61,7 @@ export default function Menu(){
                  >
                 <div className="flex items-center justify-center hidden md:block">
                     <Link href="/" onClick={()=>{changeOpen(false)}} >
-                        <Image src={darkMode?"/selficon/selficon_light.svg":"/selficon/selficon.svg"} width={40} height={40} alt="icon"></Image>
+                        <Image src={darkMode?"/selficon/selficon_light.svg":"/selficon/selficon.svg"} width={40} height={40} alt="icon" priority ></Image>
                     </Link>
                 </div>
 
@@ -74,7 +77,7 @@ export default function Menu(){
                             p-[8px]
                             w-full md:w-auto md:h-1/2 ">
                                 <Link href="/ticTacToe" className="w-full h-full text-center" onClick={()=>{changeOpen(false)}}>
-                                    井字遊戲
+                                    {t("ticTacToe")}
                                 </Link>
                         </li>
                        
@@ -83,14 +86,19 @@ export default function Menu(){
                                 p-[8px]
                                 w-full md:w-auto md:h-1/2 ">
                             <Link href="/snake" className="w-full h-full text-center" onClick={()=>{changeOpen(false)}}>
-                                貪吃蛇
+                                {t("snake")}
                             </Link>
                         </li>
                     </ul>
-                    <DarkModeButton onDarkMode={setDarkMode}></DarkModeButton>
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-[4px]
+                        transition duration-500 ease-in-out md:duration-0
+                    ">
+                        <LangChange/>
+                        <DarkModeButton onDarkMode={setDarkMode}></DarkModeButton>
+                    </div>
                 </div>
             </nav>
-
+            {/* 手機板的menu開關 */}
             <div className=" bg-white shadow dark:bg-gray-800  hover:bg-gray-400 dark:hover:bg-gray-700
                     fixed md:hidden top-0 right-0 md:p-0 
                     h-[40px] w-[40px] -translate-x-1/2 translate-y-1/2 md:size-auto z-9999

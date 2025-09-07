@@ -1,0 +1,9 @@
+{   "index":{
+        "title":"Index Title",
+        "description":"index description"
+    },
+    "menu":{
+        "ticTacToe":"TicTacToe",
+        "snake":"Snake"
+    }
+}

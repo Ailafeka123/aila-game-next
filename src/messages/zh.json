@@ -1,0 +1,9 @@
+{   "index":{
+        "title":"首頁標題",
+        "description":"首頁說明"
+    },
+    "menu":{
+        "ticTacToe":"井字遊戲",
+        "snake":"貪吃蛇"
+    }
+}

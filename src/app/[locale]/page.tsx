@@ -1,13 +1,20 @@
 // import Image from "next/image";
 
+// import { useTranslation } from 'react-i18next';
+import { useTranslations } from "next-intl";
+
 export default function Home() {
+  // const { t } = useTranslation('common');
+  const t = useTranslations("index")
+
   return (
     <main className="font-sans bg-white dark:bg-gray-900 text-gray-950 dark:text-white  
     transition duration-500 ease-in-out
     flex flex-col items-center justify-items-center 
     min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <div>
-        <h2>目前設計中2</h2>
+        <h2>{t("title")}</h2>
+        {/* <h2>{t('title')}</h2> */}
       </div>
       {/* <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <Image

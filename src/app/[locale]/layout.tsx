@@ -4,6 +4,17 @@ import "./globals.css";
 import Menu from "@/component/menu";
 import Footer from "@/component/footer";
 
+import { hasLocale, NextIntlClientProvider } from "next-intl";
+import { routing } from "@/i18n/routing";
+// import { notFound } from "next/navigation";
+import { redirect } from 'next/navigation';
+
+// import { appWithTranslation } from 'next-i18next';
+// import type { ReactNode } from 'react';
+// import initTranslations from '@/i18n';
+
+// export const generateStaticParams = () => [{ locale: 'en' }, { locale: 'zh' }];
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -37,21 +48,46 @@ export const viewport : Viewport = {
   width:"device-width",
   initialScale:1,
 };
+// export default 
 
-export default function RootLayout({
+//   Readonly<{
+//     children: React.ReactNode;
+// }>
+
+export default async function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+  params
+  }:{
+    children: React.ReactNode,
+    params:Promise<{locale:string}>;
+  } 
+) {
+
+  const {locale} = await params;
+
+  console.log(`這裡是layout , locale = ${locale}`)
+  console.log(hasLocale(routing.locales, locale));
+  console.log(routing.locales);
+
+  if(!hasLocale(routing.locales, locale)){
+    redirect("/zh");
+    // notFound();
+  }
+
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased scroll-smooth `}
       >
-        <Menu/>
-        {children}
-        <Footer/>
+        <NextIntlClientProvider>
+          <Menu/>
+          {children}
+          <Footer/>
+        </NextIntlClientProvider>
       </body>
     </html>
   );
 }
+
+// export default appWithTranslation(RootLayout);
