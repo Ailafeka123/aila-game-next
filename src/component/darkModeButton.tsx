@@ -7,6 +7,7 @@ import Image from "next/image";
 type updateDarkMode = {
     onDarkMode:(value:boolean) => void,
 }
+
 export default function DarkModeButton({onDarkMode}:updateDarkMode){
     // true = 暗色 false = 亮色
     const [darkMode,setDarkMode] = useState<boolean>(false);
