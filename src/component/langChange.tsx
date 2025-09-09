@@ -45,15 +45,15 @@ export default function LangChange(){
                 transition-[height] duration-500 ease-in-out md:duration-0 md:h-auto
                 ${openLang?"h-[90px]":"h-[0px]"} `
                 }>
-                <li className={`${locale === "en"?"text-gray-600 dark:text-gray-500":"hover:bg-gray-400 dark:hover:bg-gray-700 cursor-pointer"} 
+                <li className={` ${locale === "en" ? " text-gray-600 dark:text-gray-500 cursor-auto " :"hover:bg-gray-400 dark:hover:bg-gray-700 cursor-pointer"} 
                     flex items-center
                     p-[8px] w-svw md:w-auto h-full rounded-md `}>
-                    <Link href={pathName} locale={"en"} className="w-full h-full text-center" >English
+                    <Link href={pathName} locale={"en"} className={`w-full h-full text-center ${locale === "en" ?"cursor-default":""} `}>English
                     </Link>
                 </li>
-                <li className={`${locale === "zh"?"text-gray-600 dark:text-gray-500":"hover:bg-gray-400 dark:hover:bg-gray-700 cursor-pointer"} 
+                <li className={`${locale === "zh"?"text-gray-600 dark:text-gray-500 cursor-auto ":"hover:bg-gray-400 dark:hover:bg-gray-700 cursor-pointer"} 
                     p-[8px] w-svw md:w-auto  rounded-md`}>
-                    <Link href={pathName} locale={"zh"} className="w-full h-full text-center">
+                    <Link href={pathName} locale={"zh"} className={`w-full h-full text-center ${locale === "zh"?"cursor-default":""}`}>
                         中文
                     </Link>
                 </li>

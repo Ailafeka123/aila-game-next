@@ -65,10 +65,6 @@ export default async function RootLayout({
 
   const {locale} = await params;
 
-  console.log(`這裡是layout , locale = ${locale}`)
-  console.log(hasLocale(routing.locales, locale));
-  console.log(routing.locales);
-
   if(!hasLocale(routing.locales, locale)){
     redirect("/zh");
     // notFound();

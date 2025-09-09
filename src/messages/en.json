@@ -5,5 +5,28 @@
     "menu":{
         "ticTacToe":"TicTacToe",
         "snake":"Snake"
+    },
+    "ticTacToe":{
+        "title":"TicTacToe",
+        "descriptionTitle":"Game description",
+        "description1": "1. Board: The game is played on a 3x3 grid consisting of nine squares.",
+        "description2": "2. Players and Symbols: The game is played by two players. One uses 'O' and the other uses 'X'.",
+        "description3": "3. Taking Turns: Players take turns placing their symbols in empty squares. Usually, 'X' goes first.",
+        "description4": "4. Winning Condition: The first player to align three of their symbols in a row (horizontally, vertically, or diagonally) wins.",
+        "description5": "5. Draw: If all squares are filled and no player has aligned three in a row, the game ends in a draw."
+    },
+    "snake":{
+        "title":"Snake",
+        "descriptionTitle":"Game description",
+        "Target": "Game Objective",
+        "Target1": "Eat the food that appears on the screen.",
+        "Target2": "Make your snake as long as possible to achieve a high score.",
+        "game": "Game Controls",
+        "description1": "1. Control Direction: Players use the keyboard arrow keys (up, down, left, right) or tap and swipe on the screen to control the direction of the snake's head.",
+        "description2": "2. Eat Food: When the snake's head eats the food, its body grows by one segment. The food then disappears and reappears in a new location.",
+        "description3": "3. Avoid Collisions: Players must be careful to avoid hitting the screen's walls or running into the snake's own body.",
+        "gameOver": "Game Over Conditions",
+        "gameOver1": "The game ends when the snake's head hits the screen wall.",
+        "gameOver2": "The game ends when the snake's head collides with its own body."
     }
 }
