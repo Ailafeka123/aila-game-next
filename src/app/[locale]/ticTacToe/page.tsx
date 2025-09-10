@@ -1,5 +1,7 @@
 import { useTranslations } from "next-intl";
 
+import TicTacToeGame from "@/component/TicTacToe/TicTacToe";
+
 export default function TicTacToe(){
     const t = useTranslations("ticTacToe");
 
@@ -9,9 +11,9 @@ export default function TicTacToe(){
                 <header className="w-full m-[16px]  text-center">
                     <h2 className="text-xl">{t("title")}</h2>
                 </header>
-                <section className=" w-full h-full flex flex-col md:flex-row-reverse items-center justify-around">
+                <section className=" w-full h-full flex flex-col md:flex-row-reverse items-center md:items-start justify-around">
                     
-                    <div className="flex-1/2 text-center flex flex-col gap-[8px] mb-[16px]">
+                    <div className="flex-1/2 text-center flex flex-col items-start justify-start gap-[8px] mb-[16px]">
                         <h3 className="text-lg m-[8px]">{t("descriptionTitle")}</h3>
                         <div className="flex flex-col gap-[8px] items-start w-auto text-start px-[8px]">
                             <p className="">
@@ -31,7 +33,9 @@ export default function TicTacToe(){
                             </p>
                         </div>
                     </div>
-                    <div className="flex-1/2">遊戲區</div>
+                    <div className="md:flex-1/2 w-full md:w-auto">
+                        <TicTacToeGame/>
+                    </div>
                 </section>
             </article>
         </main>

@@ -13,7 +13,13 @@
         "description2": "2. Players and Symbols: The game is played by two players. One uses 'O' and the other uses 'X'.",
         "description3": "3. Taking Turns: Players take turns placing their symbols in empty squares. Usually, 'X' goes first.",
         "description4": "4. Winning Condition: The first player to align three of their symbols in a row (horizontally, vertically, or diagonally) wins.",
-        "description5": "5. Draw: If all squares are filled and no player has aligned three in a row, the game ends in a draw."
+        "description5": "5. Draw: If all squares are filled and no player has aligned three in a row, the game ends in a draw.",
+        "reStart":"restart",
+        "computerMode":"Single Player",
+        "TwoPlayers":"Two Players",
+        "turnState":"Turn:",
+        "Draw":"Draw",
+        "winner":" is winner"
     },
     "snake":{
         "title":"Snake",

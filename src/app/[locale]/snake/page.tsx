@@ -1,4 +1,5 @@
 import { useTranslations } from "next-intl";
+
 export default function Sanke(){
     const t = useTranslations("snake");
     // const targets = t<string[]>>("targets", { returnObjects: true });
