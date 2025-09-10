@@ -35,7 +35,7 @@ export default function TicTacToeGame(){
     // 遊戲設定區
     // 遊戲重製功能
     const reStartFunction = () =>{
-        let temp = Array(9).fill(0);
+        const temp = Array(9).fill(0);
         // 重製地圖 回合 勝利 次數 電腦地圖
         setGameMap(temp);
         setThisTurn(false);
@@ -66,7 +66,7 @@ export default function TicTacToeGame(){
         // 檢查橫向
         let row = 0 
         while(row < 3){
-            let limit = row*3+3;
+            const limit = row*3+3;
             let last:0|1|2 = 0;
             for(let i = row*3 ; i < limit ;i++){
                 if(map[i] === 0)break;
@@ -135,7 +135,7 @@ export default function TicTacToeGame(){
         // 如果已經有勝利 則取消
         if(winner !== 0) return
         // 轉換地圖
-        let temp = gameMap;
+        const temp = gameMap;
         temp[position] = thisTurn?2:1
         setGameMap(temp)
         // 轉換回合
