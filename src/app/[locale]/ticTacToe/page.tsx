@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 
-export default function ticTacToe(){
+export default function TicTacToe(){
     const t = useTranslations("ticTacToe");
 
     return (
