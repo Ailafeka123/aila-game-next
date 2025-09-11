@@ -59,7 +59,7 @@ export default function Menu(){
                 transition duration-500 ease-in-out md:duration-0
                 ${navbarOpen?"translate-x-0 " : "translate-x-full"}`}
                  >
-                <div className="flex items-center justify-center hidden md:block">
+                <div className="items-center justify-center hidden md:flex">
                     <Link href="/" onClick={()=>{changeOpen(false)}} >
                         <Image src={darkMode?"/selficon/selficon_light.svg":"/selficon/selficon.svg"} width={40} height={40} alt="icon" priority ></Image>
                     </Link>

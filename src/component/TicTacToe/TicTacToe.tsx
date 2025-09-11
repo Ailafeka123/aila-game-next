@@ -152,11 +152,75 @@ export default function TicTacToeGame(){
 
     // 電腦模式開始
     const computerGetMap = () =>{
-        // console.log(gameMap);
         // 開始計算新一輪的加權
-        // let temp = computerMap;
-        // console.log("computerMap")
-        // console.log(computerMap);
+        let temp = computerMap;
+        // 橫向計算 同時把點選的歸零
+        let row = 0;
+        while(row < 3){
+            const limit = row*3+3;
+            let getNum = 0;
+            // 計算橫向有幾個X
+            for(let i = row*3 ; i < limit ; i++){
+                if(gameMap[i] === 1){
+                    getNum += (getNum+1);
+                }
+            }
+            // 進行添加得分與把已經做好的規0
+            for(let i = row*3 ; i < limit ; i++){
+                if(gameMap[i] === 0){
+                    temp[i] += getNum;
+                }else if(gameMap[i] !== 0){
+                    temp[i] = 0;
+                }
+            }
+            row++;
+        }
+        // 垂直計算
+        let col = 0;
+        while(col < 3){
+            let getNum = 0;
+            for(let i = col ; i < 9 ; i += 3){
+                if(gameMap[i] === 1){
+                    getNum += (getNum+1);
+                }
+            }
+            for(let i = col ; i < 9 ; i += 3){
+                if(gameMap[i] === 0){
+                    temp[i] += getNum
+                }
+            }
+            col++;
+        }
+        // 斜線計算
+        // 0 4 8 與 2 4 6
+        const line:number[][] = [[0,4,8],[2,4,6]];
+        line.forEach((index:number[])=>{
+            let getNum = 0;
+            index.forEach((position:number)=>{
+                if(gameMap[position] === 1){
+                    getNum += (getNum+1);
+                }
+            })
+            index.forEach((position:number)=>{
+                if(gameMap[position] === 0 ){
+                    temp[position] += getNum;
+                }
+            })
+        })
+        let maxNum = 0;
+        let position : number[] = [];
+        for(let i = 0 ; i < 9 ; i++){
+            if(temp[i] === maxNum){
+                position.push(i);
+            }else if(temp[i] > maxNum){
+                maxNum = temp[i];
+                position = [i];
+            }
+        }
+        let choose = Math.floor(Math.random()*position.length);
+        temp[position[choose]] = 0;
+        setComputerMap(temp);
+        clickFunction(position[choose]);
     }
     // 輪到 O 判斷是否讓電腦出手
     useEffect(()=>{
@@ -164,6 +228,8 @@ export default function TicTacToeGame(){
         if(thisTurn === false) return;
         // 雙人模式也跳出
         if(gameMode === false) return;
+        // 已經勝利了 也跳出
+        if(winner !== 0)return;
         computerGetMap();
     },[thisTurn])
 
@@ -172,8 +238,8 @@ export default function TicTacToeGame(){
 
 
     return(
-        <div className="flex flex-col ">
-            <div className="flex flex-col">
+        <div className="flex flex-col items-center justify-center gap-[8px]">
+            <div className="flex flex-col  ">
                 {winner === 0 ? <h3 className="text-center" > {t("turnState")}{thisTurn === false?"X":"O"}</h3> 
                 : winner === 3 ? <h3 className="text-center" >{t("Draw")}</h3>
                 : <h3 className="text-center" >{winner === 1?`X${t("winner")}`:`O${t("winner")}`}</h3>
@@ -181,7 +247,7 @@ export default function TicTacToeGame(){
                 
                 
             </div>
-            <div className="grid grid-cols-3  text-center md:m-[16px] h-[300px]">
+            <div className="grid grid-cols-3  text-center md:m-[16px] h-[300px] w-[300px] ">
                 {gameMap && gameMap.map( (index:(0|1|2), key:number)=>{
                     let inputString : string = "";
                     if(index === 1){
@@ -192,15 +258,17 @@ export default function TicTacToeGame(){
                         inputString = " "
                     }
                     return (
-                    <div key={key} className="border-2 flex items-center justify-center w-full h-full" onClick={()=>{clickFunction(key)}}>
+                    <div key={key} className="border-2 flex items-center justify-center  aspect-square" onClick={()=>{clickFunction(key)}}>
                         {inputString}
                     </div>)
                 })}
             </div>
 
-            <div className="flex flex-row items-center justify-around m-[16px]">
-                <button onClick={()=>{reStartButtonFunction()}}>{t("reStart")}</button>
-                <button onClick={()=>{setGameMode(!gameMode)}}>{gameMode?`${t("computerMode")}`:`${t("TwoPlayers")}`}</button>
+            <div className="flex flex-row items-center justify-around m-[16px] w-full">
+                <button className="px-[16px] py-[8px] bg-white dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700
+                 border-2 rounded-md cursor-pointer " onClick={()=>{reStartButtonFunction()}}>{t("reStart")}</button>
+                <button className="px-[16px] py-[8px] bg-white dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700
+                 border-2 rounded-md cursor-pointer " onClick={()=>{setGameMode(!gameMode)}}>{gameMode?`${t("computerMode")}`:`${t("TwoPlayers")}`}</button>
             </div>
         </div>
     )
