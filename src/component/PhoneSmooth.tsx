@@ -57,13 +57,13 @@ export default function PhoneSmooth({ useBoolean, moveState, onMove }:userState)
             let moveX  = touch.clientX - position.current[0];
             let moveY = touch.clientY - position.current[1];
             // 計算角度 JS內建用法
-            let angle:number = Math.floor(Math.atan2(moveY,moveX)* (180 / Math.PI) );
+            const angle:number = Math.floor(Math.atan2(moveY,moveX)* (180 / Math.PI) );
             rotate.current = angle;
             // 計算距離
             moveX = Math.abs(moveX);
             moveY = Math.abs(moveY);
             if(moveX < 50  && moveY < 50){
-                let dic: number = Math.pow(moveY,2) + Math.pow(moveX,2);
+                const dic: number = Math.pow(moveY,2) + Math.pow(moveX,2);
                 if(dic > 2500 ){
                     smallPosition.current = 100;
                 }else{
