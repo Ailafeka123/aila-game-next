@@ -153,7 +153,7 @@ export default function TicTacToeGame(){
     // 電腦模式開始
     const computerGetMap = () =>{
         // 開始計算新一輪的加權
-        let temp = computerMap;
+        const temp = computerMap;
         // 橫向計算 同時把點選的歸零
         let row = 0;
         while(row < 3){
@@ -217,7 +217,7 @@ export default function TicTacToeGame(){
                 position = [i];
             }
         }
-        let choose = Math.floor(Math.random()*position.length);
+        const choose = Math.floor(Math.random()*position.length);
         temp[position[choose]] = 0;
         setComputerMap(temp);
         clickFunction(position[choose]);
