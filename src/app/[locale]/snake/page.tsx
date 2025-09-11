@@ -1,4 +1,5 @@
 import { useTranslations } from "next-intl";
+import SnakeGame from "@/component/snake/SnakeGame";
 
 export default function Sanke(){
     const t = useTranslations("snake");
@@ -28,7 +29,9 @@ export default function Sanke(){
                             <p>{t("gameOver2")}</p>
                         </div>
                     </div>
-                    <div className="flex-1/2">遊戲區</div>
+                    <div className="flex-1/2 w-full md:w-auto">
+                        <SnakeGame/>
+                    </div>
                 </section>
             </article>
         </main>
