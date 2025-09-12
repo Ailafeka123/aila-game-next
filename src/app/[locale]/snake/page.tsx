@@ -10,7 +10,7 @@ export default function Sanke(){
                 <header className="w-full m-[16px]  text-center">
                     <h2 className="text-xl">{t("title")}</h2>
                 </header>
-                <section className=" w-full h-full flex flex-col md:flex-row-reverse items-center justify-around">
+                <section className=" w-full h-full flex flex-col md:flex-row-reverse items-center md:items-start justify-around">
                     
                     <div className="flex-1/2 text-center flex flex-col gap-[8px]">
                         <h3 className="text-lg m-[8px]">{t("descriptionTitle")}</h3>
