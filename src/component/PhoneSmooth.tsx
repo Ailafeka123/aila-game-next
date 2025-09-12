@@ -207,4 +207,6 @@ const ArrowShow = memo(({hover}:{hover:boolean})=>{
             {temp}
         </div>
     )
-}) 
+})
+// memo的名稱抓不到 所以再次命名
+ArrowShow.displayName = "ArrowShow"
