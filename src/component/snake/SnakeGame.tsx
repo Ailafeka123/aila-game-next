@@ -55,7 +55,7 @@ export default function SnakeGame(){
             // 鍵盤部分 只負責刷新最後的Ref位置
             const computerKeyDown = (e:KeyboardEvent) =>{
                 e.preventDefault();
-                let input:string = e.key.toLowerCase();
+                const input:string = e.key.toLowerCase();
                 switch (input) {
                     case "arrowup":
                         moveLast.current = -90;
@@ -176,7 +176,7 @@ export default function SnakeGame(){
         </div>
         <div className={`relative grid  ${gameMode===0?"grid-cols-10":gameMode===1?"grid-cols-20": "grid-cols-24"}   aspect-square w-full  md:w-[400px] md:h-[400px] bg-white dark:bg-gray-800`}>
             {gameMap.map((rowIndex,colKey)=>{
-                let temp : React.ReactNode[] = [];
+                const temp : React.ReactNode[] = [];
                 temp.push(rowIndex.map((cell,rowKey)=>{
                     return (
                         <div className= {`aspect-square border-2 ${cell===0?"":cell === 1?"bg-blue-500":"bg-green-500"}`}key={`${colKey}-${rowKey}`}>

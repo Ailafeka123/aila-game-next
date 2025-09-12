@@ -61,7 +61,7 @@ const PhoneSmooth = memo(({ useBoolean, moveState, onHover, onMove }:userState)=
             if(moveState === 0){
                 let angleSpace:number = Math.floor( (angle+180) / 45  );
                 angleSpace = Math.floor( (angleSpace+1) /2);
-                let rotateList : number[] = [-180 , -90 , 0 , 90];
+                const rotateList : number[] = [-180 , -90 , 0 , 90];
                 if(angleSpace === rotateList.length){
                     angleSpace = 0;
                 }
@@ -69,7 +69,7 @@ const PhoneSmooth = memo(({ useBoolean, moveState, onHover, onMove }:userState)=
             }else if(moveState === 1){
                 let angleSpace:number = Math.floor( (angle+180) / 22.5  );
                 angleSpace = Math.floor( (angleSpace+1) /2);
-                let rotateList : number[] = [-180, -135 , -90 ,-45 , 0 , 45, 90, 135];
+                const rotateList : number[] = [-180, -135 , -90 ,-45 , 0 , 45, 90, 135];
                 if(angleSpace === rotateList.length){
                     angleSpace = 0;
                 }
@@ -191,6 +191,8 @@ const PhoneSmooth = memo(({ useBoolean, moveState, onHover, onMove }:userState)=
     </div>)
 
 })
+// memo的名稱抓不到 所以再次命名
+PhoneSmooth.displayName = "PhoneSmooth";
 export default PhoneSmooth;
 
 const ArrowShow = memo(({hover}:{hover:boolean})=>{
