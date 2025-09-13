@@ -1,6 +1,7 @@
 "use client"
 
-import { useState,useEffect,useRef } from "react"
+import { useState,useEffect,useRef,useContext } from "react"
+import { DarkModeContext } from "@/context/DarkModeContext";
 // 引入光暗icon
 import Image from "next/image";
 
@@ -11,6 +12,8 @@ type updateDarkMode = {
 export default function DarkModeButton({onDarkMode}:updateDarkMode){
     // true = 暗色 false = 亮色
     const [darkMode,setDarkMode] = useState<boolean>(false);
+    // 導入共用參數
+    const {darkModeContext, setDarkModeContext} = useContext(DarkModeContext);
     // 動畫冷卻 true = 冷卻完畢
     const changeColdDown = useRef<boolean>(true);
     // 切換光暗模式
@@ -29,17 +32,21 @@ export default function DarkModeButton({onDarkMode}:updateDarkMode){
             changeColdDown.current = true;
         },500)
     }
-    // 初始化
+    // 初始化 與檢測共用模式轉換
     useEffect(()=>{
-        const nowDark:boolean = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if(nowDark){
+        if(darkModeContext){
             setDarkMode(true);
-            document.documentElement.classList.toggle('dark');
+            document.documentElement.classList.add('dark');
+        }else{
+            setDarkMode(false);
+            document.documentElement.classList.remove('dark');
         }
     },[])
-    // 更新到父層
+
+    // 更新到父層 與共用參數
     useEffect(()=>{
         onDarkMode(darkMode);
+        setDarkModeContext(darkMode)
     },[darkMode])
     return (
     <div className={`bg-gray-200 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700 text-gray-950 dark:text-white

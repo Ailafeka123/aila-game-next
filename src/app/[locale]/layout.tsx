@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   openGraph:{
     title:"aila GameWeb",
     description:"使用Next製作的小遊戲網站",
-    locale:"zh-TW",
+    locale:"zh",
     type:"website",
   },
 };
@@ -48,7 +48,7 @@ export const viewport : Viewport = {
   width:"device-width",
   initialScale:1,
 };
-// export default 
+
 
 //   Readonly<{
 //     children: React.ReactNode;
