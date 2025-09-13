@@ -297,7 +297,7 @@ export default function SnakeGame(){
             for(let i = 0 ; i < gameSize ; i++){
                 const rowTemp = Array(gameSize).fill(0);
                 temp[i] = rowTemp
-                let SpaceSet : Set<number> = new Set();
+                const SpaceSet : Set<number> = new Set();
                 for(let cell = 0 ; cell < gameSize ; cell++){
                     SpaceSet.add(cell);
                 }
@@ -354,6 +354,8 @@ export default function SnakeGame(){
             </>
         )
     })
+    // memo的名稱抓不到 所以再次命名
+    SnakeMap.displayName = "SnakeMap"
 
 
     return (
