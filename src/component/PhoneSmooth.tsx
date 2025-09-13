@@ -14,22 +14,23 @@ type userState = {
     onMove : ( value : number) => void,
 }
 
-import { useState , useEffect,useRef , memo } from "react"
+import { useState , useEffect,useRef , memo , useContext } from "react"
+import { DarkModeContext } from "@/context/DarkModeContext";
 import Image from "next/image";
+
 // 傳入 是否啟用 方向內容 與輸出方向位置
 const PhoneSmooth = memo(({ useBoolean, moveState, onHover, onMove }:userState)=>{
     // 是否點擊中
     const [touchUse ,setTouchUse] = useState<boolean> (false);
     // 出現位置
     const position = useRef<number[]>([0,0]);
-    // const [position , setPosition] = useState<number[]>([0,0]);
     // 小球移動 只移動X軸
     const smallPosition = useRef<number>(0);
     // 觸發動畫用
     const [animationState, setAnimationState] = useState<number>(0);
     const rotate = useRef<number>(0);
-    // const [smallPosition, setSmallPosition] = useState<number[]>([0,0]);
     const coldDown = useRef<boolean>(false);
+
     // 啟用時 開啟監聽
     useEffect(()=>{
         if(useBoolean === false) return;
@@ -150,13 +151,6 @@ const PhoneSmooth = memo(({ useBoolean, moveState, onHover, onMove }:userState)=
         onMove(0);
     },[])
 
-        
-    
-    // () =>{
-    //     console.log("看到這個 代表箭頭顯示在刷新")
-    //     
-    // }
-
     return(
     <div className={`absolute w-[100px] h-[100px] bg-white dark:bg-gray-800 border-2 rounded-full
             -translate-1/2 z-990 opacity-80
@@ -196,12 +190,15 @@ PhoneSmooth.displayName = "PhoneSmooth";
 export default PhoneSmooth;
 
 const ArrowShow = memo(({hover}:{hover:boolean})=>{
-    console.log("確認滑動顯示刷新")
+    
+    // 光暗公用參數
+    const {darkModeContext} = useContext(DarkModeContext);
+    const ImgString:string = darkModeContext? "/component/phoneSmooth/phoneArrow_Dark.svg":"/component/phoneSmooth/phoneArrow_Light.svg"
     const temp:React.ReactNode[] = [];
-    temp.push(<Image key="left" src="/component/phoneSmooth/phoneArrow_Dark.svg" height={20} width={20} alt="left" className="absolute top-[40px] left-[10px] z-1000"></Image>)
-    temp.push(<Image key="top" src="/component/phoneSmooth/phoneArrow_Dark.svg" height={20} width={20} alt="top" className="absolute top-[10px] left-[40px] rotate-90 z-1000"></Image>)
-    temp.push(<Image key="right" src="/component/phoneSmooth/phoneArrow_Dark.svg" height={20} width={20} alt="right" className="absolute top-[40px] right-[10px] rotate-180 z-1000"></Image>)
-    temp.push(<Image key="bottom" src="/component/phoneSmooth/phoneArrow_Dark.svg" height={20} width={20} alt="bottom" className="absolute bottom-[10px] left-[40px] -rotate-90 z-1000"></Image>)
+    temp.push(<Image key="left" src={ImgString} height={20} width={20} alt="left" className="absolute top-[40px] left-[10px] z-1000"></Image>)
+    temp.push(<Image key="top" src={ImgString} height={20} width={20} alt="top" className="absolute top-[10px] left-[40px] rotate-90 z-1000"></Image>)
+    temp.push(<Image key="right" src={ImgString} height={20} width={20} alt="right" className="absolute top-[40px] right-[10px] rotate-180 z-1000"></Image>)
+    temp.push(<Image key="bottom" src={ImgString} height={20} width={20} alt="bottom" className="absolute bottom-[10px] left-[40px] -rotate-90 z-1000"></Image>)
     return(
         <div className={`absolute w-full h-full ${hover? "flex":"hidden"}`}>
             {temp}
