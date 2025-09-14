@@ -3,7 +3,10 @@ import { useTranslations } from "next-intl";
 import SnakeGame from "@/component/snake/SnakeGame";
 import { siteMetaData } from "@/config/metadata";
 
-export async  function generateMetadata({params}: {params: { locale: "en"|"zh" } } ):Promise<Metadata>{
+type Props = {
+  params: { locale: "en"|"zh" };
+};
+export async  function generateMetadata({params}:Props ):Promise<Metadata>{
     
     const { locale }  = await params;
     const meta = siteMetaData.Snake[locale] || siteMetaData.Snake.zh;
