@@ -4,7 +4,7 @@ import SnakeGame from "@/component/snake/SnakeGame";
 import { siteMetaData } from "@/config/metadata";
 
 type Props = {
-  params: { locale: "en"|"zh" };
+  params: { locale: "en"|"zh" } | Promise<{ locale: "en" | "zh" }>;
 };
 export async  function generateMetadata({params}:Props ){
     

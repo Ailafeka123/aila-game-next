@@ -7,7 +7,7 @@ import { siteMetaData } from "@/config/metadata";
 import TicTacToeGame from "@/component/TicTacToe/TicTacToe";
 
 type Props = {
-  params: { locale: "en"|"zh" };
+  params: { locale: "en"|"zh" } | Promise<{ locale: "en" | "zh" }>;
 };
 export async function generateMetadata({ params }: Props){
     const { locale }  = await params;
