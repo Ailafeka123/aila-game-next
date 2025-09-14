@@ -6,7 +6,7 @@ import { siteMetaData } from "@/config/metadata";
 type Props = {
   params: { locale: "en"|"zh" };
 };
-export async  function generateMetadata({params}:Props ):Promise<Metadata>{
+export async  function generateMetadata({params}:Props ){
     
     const { locale }  = await params;
     const meta = siteMetaData.Snake[locale] || siteMetaData.Snake.zh;

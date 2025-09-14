@@ -9,7 +9,7 @@ import TicTacToeGame from "@/component/TicTacToe/TicTacToe";
 type Props = {
   params: { locale: "en"|"zh" };
 };
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props){
     const { locale }  = await params;
     const meta = siteMetaData.ticTacToe[locale] || siteMetaData.ticTacToe.zh;
     return {
