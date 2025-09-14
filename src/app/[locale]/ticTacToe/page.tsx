@@ -1,6 +1,27 @@
+
 import { useTranslations } from "next-intl";
 
+import { Metadata } from "next";
+import { siteMetaData } from "@/config/metadata";
+
 import TicTacToeGame from "@/component/TicTacToe/TicTacToe";
+
+type Props = {
+  params: { locale: "en"|"zh" };
+};
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    const { locale }  = await params;
+    const meta = siteMetaData.ticTacToe[locale] || siteMetaData.ticTacToe.zh;
+    return {
+        title: meta.title,
+        description: meta.description,
+        openGraph: {
+        title: meta.title,
+        description: meta.description,
+        },
+    };
+}
+
 
 export default function TicTacToe(){
     const t = useTranslations("ticTacToe");

@@ -1,5 +1,23 @@
+import { Metadata } from "next";
 import { useTranslations } from "next-intl";
 import SnakeGame from "@/component/snake/SnakeGame";
+import { siteMetaData } from "@/config/metadata";
+
+export async  function generateMetadata({params}: {params: { locale: "en"|"zh" } } ):Promise<Metadata>{
+    
+    const { locale }  = await params;
+    const meta = siteMetaData.Snake[locale] || siteMetaData.Snake.zh;
+    return {
+        title: meta.title,
+        description: meta.description,
+        openGraph: {
+        title: meta.title,
+        description: meta.description,
+        },
+    };
+    
+}
+
 
 export default function Sanke(){
     const t = useTranslations("snake");
