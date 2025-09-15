@@ -24,10 +24,8 @@ export async  function generateMetadata({params}:Props ):Promise<Metadata>{
 
 export default function Sanke(){
     const t = useTranslations("snake");
-    // const targets = t<string[]>>("targets", { returnObjects: true });
     return(
         <main>
-            {/* <article className="flex flex-col items-center justify-around"> */}
             <article className="grid grid-flow-row grid-rows-[auto_1fr] grid-cols-1 md:grid-cols-2 gap-[16px]">
                 <header className="md:col-span-2 m-[16px]  text-center">
                     <h2 className="text-xl">{t("title")}</h2>
@@ -54,17 +52,6 @@ export default function Sanke(){
                 <section className=" col-span-1 flex flex-col items-center justify-start w-full gap-[8px]">
                     <SnakeGame/>
                 </section>
-
-
-
-
-                {/* <section className=" w-full h-full flex flex-col md:flex-row-reverse items-center md:items-start justify-around">
-                    
-                    
-                    <div className="flex-1/2 w-full md:w-auto">
-                        
-                    </div>
-                </section> */}
             </article>
         </main>
     )

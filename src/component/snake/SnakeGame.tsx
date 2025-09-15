@@ -9,7 +9,7 @@ type snakeData = {
     getScore:number,
     space:Array<Set<number>>
 }
-type snakeMapType = (0|1|2|3)[][];
+type snakeMapType = (0|1|2|3|4)[][];
 
 export default function SnakeGame(){
     // 遊戲狀態 false = 關閉
@@ -34,7 +34,7 @@ export default function SnakeGame(){
     // 身體陣列 => 知道哪些是身體與排序 可以拆分頭與尾巴
     // 食物 => 判定增長 
     // 由這些組成所謂的Map
-    // 0 = 空 1 = 蛇頭 2 = 蛇身 3 = 食物 
+    // 0 = 空 1 = 蛇頭 2 = 蛇身 3 = 食物  4 = 碰撞
     const snakeData = useRef<snakeData>({
         body:[[5,5],[6,5],[7,5]],
         food:[1,1],
@@ -235,6 +235,7 @@ export default function SnakeGame(){
         // 邊界
         if(nextMove[0] >= gameSize || nextMove[1]>=gameSize || nextMove[0] < 0 || nextMove[1] < 0){
             // 紀錄畫面
+            snakeMapData.current[snakeHeader[0]][snakeHeader[1]] = 4
             endMap.current = snakeMapData.current;
             // 設定死亡 與 得分
             setGameEnd(0)
@@ -292,6 +293,7 @@ export default function SnakeGame(){
             }else{
                 // 撞到身體 遊戲結束
                 // 紀錄畫面
+                snakeMapData.current[nextMove[0]][nextMove[1]] = 4;
                 endMap.current = snakeMapData.current;
                 // 設定死亡 與 得分
                 setGameEnd(1)
@@ -381,7 +383,7 @@ export default function SnakeGame(){
                     const temp : React.ReactNode[] = [];
                     temp.push(rowIndex.map((cell,rowKey)=>{
                         return (
-                            <div className= {`aspect-square border ${cell===0?"":cell === 1?"bg-blue-500":cell===2?"bg-blue-900":"bg-green-500"}`}key={`${colKey}-${rowKey}`}>
+                            <div className= {`aspect-square border ${cell===0?"":cell === 1?"bg-blue-500":cell===2?"bg-blue-900":cell===3?"bg-green-500":"bg-red-500"}`}key={`${colKey}-${rowKey}`}>
                             </div>
                         )
                     })

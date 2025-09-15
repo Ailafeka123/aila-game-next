@@ -38,19 +38,21 @@ const PhoneSmooth = memo(({ useBoolean, moveState, onHover, onMove }:userState)=
             return;
         }
         const handleTouchStart = (e: TouchEvent) => {
-            e.preventDefault()
+            if (e.cancelable) e.preventDefault();
             // 顯示點擊框
             setTouchUse(true);
             const touch = e.touches[0];
             // 更新位置
             position.current = [touch.pageX,touch.pageY]
             smallPosition.current = 0
+            window.addEventListener("touchmove", handleTouchMove,{ passive: false });
         };
         // 手機滑動感應
         const handleTouchMove = (e: TouchEvent) => {
+            window.removeEventListener("touchmove", handleTouchMove);
+            if (e.cancelable) e.preventDefault();
             if(coldDown.current) return;
             coldDown.current = true;
-            e.preventDefault()
             const touch = e.touches[0];
             // 計算移動
             // 為了符合動畫 所以只能+50 好讓她置中
@@ -90,41 +92,45 @@ const PhoneSmooth = memo(({ useBoolean, moveState, onHover, onMove }:userState)=
             }else{
                 smallPosition.current = 50;
             }
-
-
-
-
             // 每秒更新20次就夠了 用動畫太吃效能
-            setTimeout(()=>{
+            // setTimeout(()=>{
+                
+            // },50);
+            // 配合畫面偵數刷新
+            requestAnimationFrame(()=>{
+                // 兩者配合使用
                 coldDown.current = false;
+                window.addEventListener("touchmove", handleTouchMove,{ passive: false });
+                // 刷新動畫
                 setAnimationState(index=>{
                     if(index > 3600){
                         return 0;
                     }
                     return(index+1);
                 });
-            },50);
-            // 配合畫面偵數刷新
-            // requestAnimationFrame(()=>{
-            //     // 刷新動畫
-                
-            //     )
-            // })
+            })
             
         };
         // 手機滑動結束
         const handleTouchEnd = () => {
             // 關閉顯示
             setTouchUse(false);
+            window.removeEventListener("touchmove", handleTouchMove);
         };
+        const handleTouchCancel = () => {
+            setTouchUse(false);
+            window.removeEventListener("touchmove", handleTouchMove);
+        }
 
         window.addEventListener("touchstart", handleTouchStart,{ passive: false });
-        window.addEventListener("touchmove", handleTouchMove,{ passive: false });
+        // window.addEventListener("touchmove", handleTouchMove,{ passive: false });
         window.addEventListener("touchend", handleTouchEnd);
+        window.addEventListener("touchcancel", handleTouchCancel);
         return(()=>{
             window.removeEventListener("touchstart", handleTouchStart);
             window.removeEventListener("touchmove", handleTouchMove);
             window.removeEventListener("touchend", handleTouchEnd);
+            window.removeEventListener("touchcancel", handleTouchCancel);
             setTouchUse(false);
         })
     },[useBoolean])
@@ -137,13 +143,10 @@ const PhoneSmooth = memo(({ useBoolean, moveState, onHover, onMove }:userState)=
 
     // 觸發動畫時 順便回傳方向
     useEffect(()=>{
+        // 初始狀態不回傳
+        if(rotate.current === 999) return
         onMove(rotate.current);
     },[animationState])
-    // 檢測使用
-    useEffect(()=>{
-        console.log("每一次渲染手機操控");
-        onMove(999);
-    },[])
 
     return(
     <div className={`absolute w-[100px] h-[100px] bg-white dark:bg-gray-800 border-2 rounded-full
@@ -180,14 +183,13 @@ const PhoneSmooth = memo(({ useBoolean, moveState, onHover, onMove }:userState)=
 
 })
 // memo的名稱抓不到 所以再次命名
-PhoneSmooth.displayName = "PhoneSmooth";
+PhoneSmooth.displayName = "PhoneSmooth";    
 export default PhoneSmooth;
 
 const ArrowShow = memo(({hover}:{hover:boolean})=>{
-    
     // 光暗公用參數
     const {darkModeContext} = useContext(DarkModeContext);
-    const ImgString:string = darkModeContext? "/component/phoneSmooth/phoneArrow_Dark.svg":"/component/phoneSmooth/phoneArrow_Light.svg"
+    const ImgString:string = darkModeContext ? "/component/phoneSmooth/phoneArrow_Dark.svg":"/component/phoneSmooth/phoneArrow_light.svg"
     const temp:React.ReactNode[] = [];
     temp.push(<Image key="left" src={ImgString} height={20} width={20} alt="left" className="absolute top-[40px] left-[10px] z-1000"></Image>)
     temp.push(<Image key="top" src={ImgString} height={20} width={20} alt="top" className="absolute top-[10px] left-[40px] rotate-90 z-1000"></Image>)

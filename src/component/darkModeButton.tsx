@@ -35,8 +35,6 @@ export default function DarkModeButton({onDarkMode}:updateDarkMode){
     }
     // 初始化 與檢測共用模式轉換
     useEffect(()=>{
-        console.log("這裡是初始化");
-        console.log(darkModeContext);
         if(darkModeContext){
             setDarkMode(true);
             document.documentElement.classList.add('dark');
@@ -52,7 +50,6 @@ export default function DarkModeButton({onDarkMode}:updateDarkMode){
         if(loading === false) return;
         onDarkMode(darkMode);
         setDarkModeContext(darkMode)
-        console.log("這裡更新context")
     },[darkMode])
     return (
     <div className={`bg-gray-200 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700 text-gray-950 dark:text-white
