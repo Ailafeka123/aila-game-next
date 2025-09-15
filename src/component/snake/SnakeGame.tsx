@@ -60,6 +60,7 @@ export default function SnakeGame(){
     const endMap = useRef<snakeMapType>([])
     // 結算分數
     const getEndNumber = useRef<[number,number]>([0,0]);
+    const userScroll = useRef<number>(0);
 
     useEffect(()=>{
         setLoding(true)
@@ -127,6 +128,16 @@ export default function SnakeGame(){
             // 遊戲開始 強制難度關閉選單
             setGameModeSelect(false);
             setPhoneControl(true);
+            const userGame = document.getElementById("game");
+            if(userGame){
+                const rect  = userGame.getBoundingClientRect();
+                const elementTop = rect.top + window.scrollY; // 元素頂部在整個頁面的位置
+                const elementHeight = rect.height;
+                const viewportHeight = window.innerHeight;
+                const scrollTo = elementTop - (viewportHeight / 2) + (elementHeight / 2);
+                window.scrollTo({ top: scrollTo, behavior: "smooth" });
+
+            }
             // 鍵盤部分 只負責刷新最後的Ref位置
             const computerKeyDown = (e:KeyboardEvent) =>{
                 e.preventDefault();
@@ -394,6 +405,7 @@ export default function SnakeGame(){
         }
         // 死亡了 顯示結算
         // console.log("開啟分享畫面")
+        userScroll.current = window.scrollY;
         setEndView(true);
     },[gameEnd])
 
@@ -461,9 +473,9 @@ export default function SnakeGame(){
             </div>
         </header>
 
-        <div className={`relative grid  ${gameMode===0?"grid-cols-10":gameMode===1?"grid-cols-20": "grid-cols-24"} border  aspect-square w-full  md:w-[400px] md:h-[400px] bg-white dark:bg-gray-800`}>
+        <div className={`relative border  aspect-square w-full  md:w-[400px] md:h-[400px] bg-white dark:bg-gray-800`} id="game">
             <SnakeMap gameMap={gameMapData}/>
-            <div className={`absolute ${gameState?"hidden":"flex"} w-full h-full  items-center justify-center z-1 bg-white/50 dark:bg-gray-800/50 `}>
+            <div className={`absolute ${gameState?"hidden":"flex"} w-full h-full top-0  items-center justify-center z-1 bg-white/50 dark:bg-gray-800/50 `}>
                 <button type="button" className="bg-white dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700 p-[16px] border-2 cursor-pointer rounded-md"
                     onClick={()=>{setGameState(true)}}
                 >開始</button>
@@ -471,11 +483,11 @@ export default function SnakeGame(){
         </div>
         {/* 遊戲結束結算畫面 */}
         {endView&&
-        <div className="absolute top-0 left-0 w-full h-full bg-white/50 dark:bg-gray-800/50 z-1000">
-            <div className="absolute top-[50%] left-[50%] 
+        <div className={`fixed top-0 left-0 w-svw h-svh bg-white/50 dark:bg-gray-800/50 z-1000`} >
+            <div className={`fixed top-[50%] left-[50%] 
             w-full aspect-square md:w-auto border-2 rounded-md -translate-1/2 z-1000 
             flex flex-col items-center justify-around gap-[8px] bg-white dark:bg-gray-800
-            p-[16px]">
+            p-[16px] `}>
                 <h3>遊戲結束</h3>
                 <p>死亡原因:{gameEnd === 0? "撞到牆" : gameEnd === 1? "咬到身體" : "不明"}</p>
                 <div className="flex flex-row gap-[8px]">
