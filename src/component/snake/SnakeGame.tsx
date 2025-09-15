@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect, useRef, memo, useMemo } from "react";
 import PhoneSmooth from "@/component/PhoneSmooth";
-import next from "next";
 // 設定蛇的物件資料
 type snakeData = {
     body:[number,number][],
@@ -32,9 +31,6 @@ export default function SnakeGame(){
     const lastMove = useRef<number>(-90);
     // 確認進到CSR
     const [loading,setLoding] = useState<boolean>(false);
-    //目前需要 
-    // 頭部 => 判斷移動
-    // 尾部 => 即將移除 
     // 身體陣列 => 知道哪些是身體與排序 可以拆分頭與尾巴
     // 食物 => 判定增長 
     // 由這些組成所謂的Map
@@ -53,6 +49,18 @@ export default function SnakeGame(){
     // 蛇的動畫刷新 觸發memo用  -1為尚未開始
     const [snakeMoveAnimate , setSnakeMoveAnimate] = useState<number>(-1);
     
+    // 結算畫面 
+    // -1 = 初始化   
+    // 0 = 撞到牆 
+    // 1 = 吃到身體
+    const [gameEnd,setGameEnd] = useState<number>(-1);
+    // 結算畫面的開關
+    const [endView , setEndView] = useState<boolean>(false);
+    // 結算畫面顯示
+    const endMap = useRef<snakeMapType>([])
+    // 結算分數
+    const getEndNumber = useRef<[number,number]>([0,0]);
+
     useEffect(()=>{
         setLoding(true)
     },[])
@@ -164,10 +172,7 @@ export default function SnakeGame(){
             window.addEventListener("keydown",computerKeyDown);
             // 設定0 為遊戲開始 然後開啟蛇蛇行動
             setTimeout(()=>{
-                console.log("這裡是遊戲開始")
                 setSnakeMove(0)
-                console.log("開啟蛇蛇行動")
-                console.log(moveLast.current)
             }, Math.floor(1000/snakeData.current.speed) )
 
             return(()=>{
@@ -178,7 +183,7 @@ export default function SnakeGame(){
 
     // 手機控制刷新方向
     useEffect(()=>{
-        // 進行判斷 避免返回
+        // 進行判斷 避免返回直接撞身體
         if( (phoneMove + lastMove.current) === 0 || (phoneMove + lastMove.current) === -180){
             return;
         }else{
@@ -194,9 +199,10 @@ export default function SnakeGame(){
         if(gameState === false) return;
         // 初始化 不需要移動
         if(snakeMove === -1) return;
-        // 保險用 再次讓第一步 畢竟往上
+        // 保險用 再次讓第一步 畢竟往上 手機也是同步
         if(snakeMove === 0){
             moveLast.current = -90;
+            setPhoneMove(-90)
         }
         //  抓取蛇的資料
         const snakeHeader : [number,number] =snakeData.current.body[0];
@@ -212,11 +218,17 @@ export default function SnakeGame(){
         }else{
             nextMove[1]++
         }
-        // 行動完成 更新上一動
+        // 行動完成 更新上一動 且同步滑動物件 避免交錯使用的錯誤
         lastMove.current = moveLast.current;
+        setPhoneMove(moveLast.current)
         // 邊界
         if(nextMove[0] >= gameSize || nextMove[1]>=gameSize || nextMove[0] < 0 || nextMove[1] < 0){
-            console.log("撞到牆壁 要求中止遊戲")
+            // 紀錄畫面
+            endMap.current = snakeMapData.current;
+            // 設定死亡 與 得分
+            setGameEnd(0)
+            getEndNumber.current[0] = snakeData.current.getScore;
+            getEndNumber.current[1] = Math.max(getEndNumber.current[1],snakeData.current.getScore);
             setGameState(false);
         // 看看有沒有吃到食物
         
@@ -268,12 +280,18 @@ export default function SnakeGame(){
                 snakeData.current.space[nextMove[0]].delete(nextMove[1]);
             }else{
                 // 撞到身體 遊戲結束
+                // 紀錄畫面
+                endMap.current = snakeMapData.current;
+                // 設定死亡 與 得分
+                setGameEnd(1)
+                getEndNumber.current[0] = snakeData.current.getScore;
+                getEndNumber.current[1] = Math.max(getEndNumber.current[1],snakeData.current.getScore);
                 setGameState(false);
+
             }
         }
         setSnakeMoveAnimate(index=>index+1);
     },[snakeMove])
-
 
     // 如果還沒結束 則繼續讓蛇行動
     useEffect(()=>{
@@ -338,8 +356,16 @@ export default function SnakeGame(){
     },[snakeMoveAnimate,gameSize,loading])
     // 提高貪吃蛇地圖效能 避免每次都重製
     const SnakeMap = memo(({gameMap}:{gameMap:snakeMapType})=>{
+        // 如果是空的 則回傳這個
+        if(gameMap.length === 0){
+            return (
+                <div>
+                    <p className="text-red-500">圖片顯示錯誤</p>
+                </div>
+            )
+        }
         return(
-            <>
+            <div className={`relative grid  ${gameMode===0?"grid-cols-10":gameMode===1?"grid-cols-20": "grid-cols-24"} border  aspect-square w-full  md:w-[400px] md:h-[400px] bg-white dark:bg-gray-800`}>
                 {gameMap.map((rowIndex,colKey)=>{
                     const temp : React.ReactNode[] = [];
                     temp.push(rowIndex.map((cell,rowKey)=>{
@@ -351,11 +377,44 @@ export default function SnakeGame(){
                 )
                 return temp;
                 })}
-            </>
+            </div>
         )
     })
     // memo的名稱抓不到 所以再次命名
     SnakeMap.displayName = "SnakeMap"
+
+
+    // 結算畫面
+    useEffect(()=>{
+        // 結算初始化 關閉窗口
+        if(gameEnd === -1){
+            // console.log("關閉分享")
+            setEndView(false);
+            return;
+        }
+        // 死亡了 顯示結算
+        // console.log("開啟分享畫面")
+        setEndView(true);
+    },[gameEnd])
+
+
+    // 測試分享 (暫時不設定 理想需要截圖與截圖分享)
+    const handleShare = async () => {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: "我的網站",
+                    text: "來看看這個超棒的網站！",
+                    url: window.location.href,
+                });
+                console.log("分享成功！");
+            } catch (err) {
+                console.log("使用者取消或發生錯誤", err);
+            }
+        } else {
+            alert("你的瀏覽器不支援分享功能");
+        }
+    };
 
 
     return (
@@ -410,6 +469,28 @@ export default function SnakeGame(){
                 >開始</button>
             </div>
         </div>
+        {/* 遊戲結束結算畫面 */}
+        {endView&&
+        <div className="absolute top-0 left-0 w-full h-full bg-white/50 dark:bg-gray-800/50 z-1000">
+            <div className="absolute top-[50%] left-[50%] 
+            w-full aspect-square md:w-auto border-2 rounded-md -translate-1/2 z-1000 
+            flex flex-col items-center justify-around gap-[8px] bg-white dark:bg-gray-800
+            p-[16px]">
+                <h3>遊戲結束</h3>
+                <p>死亡原因:{gameEnd === 0? "撞到牆" : gameEnd === 1? "咬到身體" : "不明"}</p>
+                <div className="flex flex-row gap-[8px]">
+                    <p>最終得分:{`${getEndNumber.current[0]}`}</p>
+                    <p>最高得分:{`${getEndNumber.current[1]}`}</p>
+                </div>
+                <SnakeMap gameMap={endMap.current}></SnakeMap>
+                <div className="flex flex-row w-full items-center justify-around">
+                    <button type="button" className=" bg-white dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700 border-2 px-[8px] py-[4px] cursor-pointer rounded-md" onClick={()=>{setGameEnd(-1)}}>關閉</button>
+                    {/* <button type="button" className=" bg-white dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700 border-2 px-[8px] py-[4px] cursor-pointer rounded-md" onClick={()=>{handleShare()}}>分享按鈕</button> */}
+                </div>
+            </div>
+        </div>
+        }
+        
         
         <PhoneSmooth useBoolean={phoneControl} moveState={0} onMove = {setPhoneMove} />
 

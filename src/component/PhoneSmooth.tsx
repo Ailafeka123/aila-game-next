@@ -28,12 +28,15 @@ const PhoneSmooth = memo(({ useBoolean, moveState, onHover, onMove }:userState)=
     const smallPosition = useRef<number>(0);
     // 觸發動畫用
     const [animationState, setAnimationState] = useState<number>(0);
-    const rotate = useRef<number>(0);
+    // 待機狀態999 在每次點的時候 沒得回傳
+    const rotate = useRef<number>(999);
     const coldDown = useRef<boolean>(false);
-
     // 啟用時 開啟監聽
     useEffect(()=>{
-        if(useBoolean === false) return;
+        if(useBoolean === false) {
+            rotate.current = 999
+            return;
+        }
         const handleTouchStart = (e: TouchEvent) => {
             e.preventDefault()
             // 顯示點擊框
@@ -41,13 +44,9 @@ const PhoneSmooth = memo(({ useBoolean, moveState, onHover, onMove }:userState)=
             const touch = e.touches[0];
             // 更新位置
             position.current = [touch.pageX,touch.pageY]
-            smallPosition.current = 50
-            // 關閉自己 開啟移動監聽與結束監聽
-            window.removeEventListener("touchstart", handleTouchStart);
-            window.addEventListener("touchmove", handleTouchMove,{ passive: false });
-            window.addEventListener("touchend", handleTouchEnd);
+            smallPosition.current = 0
         };
-        
+        // 手機滑動感應
         const handleTouchMove = (e: TouchEvent) => {
             if(coldDown.current) return;
             coldDown.current = true;
@@ -113,20 +112,15 @@ const PhoneSmooth = memo(({ useBoolean, moveState, onHover, onMove }:userState)=
             // })
             
         };
-
+        // 手機滑動結束
         const handleTouchEnd = () => {
             // 關閉顯示
             setTouchUse(false);
-            // 關閉自己與移動
-            window.removeEventListener("touchmove", handleTouchMove);
-            window.removeEventListener("touchend", handleTouchEnd);
-            // 開啟起始監聽
-            window.addEventListener("touchstart", handleTouchStart,{ passive: false });
         };
 
         window.addEventListener("touchstart", handleTouchStart,{ passive: false });
-        // window.addEventListener("touchmove", handleTouchMove,{ passive: false });
-        // window.addEventListener("touchend", handleTouchEnd);
+        window.addEventListener("touchmove", handleTouchMove,{ passive: false });
+        window.addEventListener("touchend", handleTouchEnd);
         return(()=>{
             window.removeEventListener("touchstart", handleTouchStart);
             window.removeEventListener("touchmove", handleTouchMove);
@@ -148,7 +142,7 @@ const PhoneSmooth = memo(({ useBoolean, moveState, onHover, onMove }:userState)=
     // 檢測使用
     useEffect(()=>{
         console.log("每一次渲染手機操控");
-        onMove(0);
+        onMove(999);
     },[])
 
     return(
