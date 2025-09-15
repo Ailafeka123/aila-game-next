@@ -1,5 +1,6 @@
 import type { Metadata,Viewport } from "next";
 import { DarkModeProvider } from "@/context/DarkModeContext";
+
 export const metadata: Metadata = {
   title: "Aila-GameWeb ",
   description: "使用Next製作小遊戲網站，目前擁有貪吃蛇與井字遊戲，利用i18n多語言的功能，",

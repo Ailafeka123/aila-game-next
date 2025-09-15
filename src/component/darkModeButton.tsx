@@ -13,9 +13,10 @@ export default function DarkModeButton({onDarkMode}:updateDarkMode){
     // true = 暗色 false = 亮色
     const [darkMode,setDarkMode] = useState<boolean>(false);
     // 導入共用參數
-    const {darkModeContext, setDarkModeContext} = useContext(DarkModeContext);
+    const {darkModeContext, setDarkModeContext,darkModeContextLoading} = useContext(DarkModeContext);
     // 動畫冷卻 true = 冷卻完畢
     const changeColdDown = useRef<boolean>(true);
+    const [loading,setLoading] = useState<boolean>(false);
     // 切換光暗模式
     const clickChangeMode = () =>{
         // 如果是暗色 轉換成亮色 反之依樣
@@ -34,6 +35,8 @@ export default function DarkModeButton({onDarkMode}:updateDarkMode){
     }
     // 初始化 與檢測共用模式轉換
     useEffect(()=>{
+        console.log("這裡是初始化");
+        console.log(darkModeContext);
         if(darkModeContext){
             setDarkMode(true);
             document.documentElement.classList.add('dark');
@@ -41,12 +44,15 @@ export default function DarkModeButton({onDarkMode}:updateDarkMode){
             setDarkMode(false);
             document.documentElement.classList.remove('dark');
         }
-    },[])
+        setLoading(true);
+    },[darkModeContextLoading])
 
     // 更新到父層 與共用參數
     useEffect(()=>{
+        if(loading === false) return;
         onDarkMode(darkMode);
         setDarkModeContext(darkMode)
+        console.log("這裡更新context")
     },[darkMode])
     return (
     <div className={`bg-gray-200 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700 text-gray-950 dark:text-white
