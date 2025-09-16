@@ -1,6 +1,8 @@
 "use client";
 import { useState, useEffect, useRef, memo, useMemo } from "react";
 import PhoneSmooth from "@/component/PhoneSmooth";
+import CreateImage from "@/component/createImage";
+import { useTranslations } from "next-intl";
 // 設定蛇的物件資料
 type snakeData = {
     body:[number,number][],
@@ -12,6 +14,7 @@ type snakeData = {
 type snakeMapType = (0|1|2|3|4)[][];
 
 export default function SnakeGame(){
+    const t = useTranslations("snake");
     // 遊戲狀態 false = 關閉
     const [gameState, setGameState] = useState<boolean>(false);
     // 遊戲模式部分 分為10*10 20*20 24*24 對應 0 1 2 
@@ -48,7 +51,6 @@ export default function SnakeGame(){
     const [snakeMove,setSnakeMove] = useState<number>(-1);
     // 蛇的動畫刷新 觸發memo用  -1為尚未開始
     const [snakeMoveAnimate , setSnakeMoveAnimate] = useState<number>(-1);
-    
     // 結算畫面 
     // -1 = 初始化   
     // 0 = 撞到牆 
@@ -61,6 +63,10 @@ export default function SnakeGame(){
     // 結算分數
     const getEndNumber = useRef<[number,number]>([0,0]);
     const userScroll = useRef<number>(0);
+    // 抓取顯示圖片 轉成image
+    const changeImageDiv = useRef<HTMLDivElement>(null);
+    const [imgSrc, setImgSrc] = useState<string | null>(null);
+
 
     useEffect(()=>{
         setLoding(true)
@@ -407,18 +413,35 @@ export default function SnakeGame(){
         }
         // 死亡了 顯示結算
         // console.log("開啟分享畫面")
+        handleCapture();
         userScroll.current = window.scrollY;
         setEndView(true);
     },[gameEnd])
+    useEffect(()=>{
+        if(endView === false)return;
+        handleCapture();
+    },[endView])
+
+    const handleCapture = () => {
+        if (!changeImageDiv.current) return;
+        const img = CreateImage({ div: changeImageDiv.current });
+        setImgSrc(img.src);
+    };
+
 
 
     // 測試分享 (暫時不設定 理想需要截圖與截圖分享)
     const handleShare = async () => {
         if (navigator.share) {
             try {
+                if (!imgSrc) return;
+                const response = await fetch(imgSrc);
+                const blob = await response.blob();
+                const file = new File([blob], "snake-map.png", { type: "image/png" });
                 await navigator.share({
-                    title: "我的網站",
-                    text: "來看看這個超棒的網站！",
+                    title: t("shareTitle"),
+                    files:[file],
+                    text: `${t("shareText")} ${getEndNumber.current[0]}`,
                     url: window.location.href,
                 });
                 console.log("分享成功！");
@@ -485,21 +508,23 @@ export default function SnakeGame(){
         </div>
         {/* 遊戲結束結算畫面 */}
         {endView&&
-        <div className={`fixed top-0 left-0 w-svw h-svh bg-white/50 dark:bg-gray-800/50 z-1000`} >
+        <div className={`fixed top-0 left-0 w-svw h-svh bg-white/50 dark:bg-gray-800/50 z-1000`}   >
             <div className={`fixed top-[50%] left-[50%] 
             w-full aspect-square md:w-auto border-2 rounded-md -translate-1/2 z-1000 
-            flex flex-col items-center justify-around gap-[8px] bg-white dark:bg-gray-800
-            p-[16px] `}>
+            flex flex-col items-center justify-around gap-[8px] bg-white dark:bg-gray-800 
+            p-[16px] `} >
                 <h3>遊戲結束</h3>
                 <p>死亡原因:{gameEnd === 0? "撞到牆" : gameEnd === 1? "咬到身體" : "不明"}</p>
                 <div className="flex flex-row gap-[8px]">
                     <p>最終得分:{`${getEndNumber.current[0]}`}</p>
                     <p>最高得分:{`${getEndNumber.current[1]}`}</p>
                 </div>
-                <SnakeMap gameMap={endMap.current}></SnakeMap>
+                <div ref = {changeImageDiv}>
+                    <SnakeMap gameMap={endMap.current}  ></SnakeMap>
+                </div>
                 <div className="flex flex-row w-full items-center justify-around">
                     <button type="button" className=" bg-white dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700 border-2 px-[8px] py-[4px] cursor-pointer rounded-md" onClick={()=>{setGameEnd(-1)}}>關閉</button>
-                    {/* <button type="button" className=" bg-white dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700 border-2 px-[8px] py-[4px] cursor-pointer rounded-md" onClick={()=>{handleShare()}}>分享按鈕</button> */}
+                    <button type="button" className=" bg-white dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700 border-2 px-[8px] py-[4px] cursor-pointer rounded-md" onClick={()=>{handleShare()}}>分享按鈕</button>
                 </div>
             </div>
         </div>
