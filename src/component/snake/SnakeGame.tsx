@@ -412,7 +412,7 @@ export default function SnakeGame(){
             return;
         }
         // 死亡了 顯示結算
-        // console.log("開啟分享畫面")
+        // 同步啟動分享圖片
         handleCapture();
         userScroll.current = window.scrollY;
         setEndView(true);
@@ -510,16 +510,16 @@ export default function SnakeGame(){
         {endView&&
         <div className={`fixed top-0 left-0 w-svw h-svh bg-white/50 dark:bg-gray-800/50 z-1000`}   >
             <div className={`fixed top-[50%] left-[50%] 
-            w-full aspect-square md:w-auto border-2 rounded-md -translate-1/2 z-1000 
+            w-full max-w-[550px] aspect-square md:w-auto border-2 rounded-md -translate-1/2 z-1000 
             flex flex-col items-center justify-around gap-[8px] bg-white dark:bg-gray-800 
-            p-[16px] `} >
+            p-[16px]`} >
                 <h3>遊戲結束</h3>
                 <p>死亡原因:{gameEnd === 0? "撞到牆" : gameEnd === 1? "咬到身體" : "不明"}</p>
                 <div className="flex flex-row gap-[8px]">
                     <p>最終得分:{`${getEndNumber.current[0]}`}</p>
                     <p>最高得分:{`${getEndNumber.current[1]}`}</p>
                 </div>
-                <div ref = {changeImageDiv}>
+                <div ref = {changeImageDiv} className="aspect-square w-full max-w-[500px]">
                     <SnakeMap gameMap={endMap.current}  ></SnakeMap>
                 </div>
                 <div className="flex flex-row w-full items-center justify-around">
