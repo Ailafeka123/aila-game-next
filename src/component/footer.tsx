@@ -1,7 +1,7 @@
 export default function Footer(){
 
     return(
-        <footer className={` bg-gray-200 dark:bg-gray-800  w-full  md:p-2 p-4 flex flex-col md:flex-row gap-4 text-center items-center justify-around`}>
+        <footer className={` bg-gray-200 dark:bg-gray-800  w-full mt-[16px]  md:p-2 p-4 flex flex-col md:flex-row gap-4 text-center items-center justify-around`}>
             <div className=' text-gray-950 dark:text-white flex flex-col gap-2'>
                 <p >聯繫方法</p>
                 <p >電話號碼:0917-871-819</p>

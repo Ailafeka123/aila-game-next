@@ -441,7 +441,10 @@ export default function SnakeGame(){
                 // const response = await fetch(imgSrc);
                 // const blob = await response.blob();
                 // const file = new File([blob], "snake-map.png", { type: "image/png" });
-                if (navigator.canShare()){
+                // 確認是否為手機等點擊裝置
+                const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+                console.log(isMobile)
+                if (navigator.share && isMobile){
                     await navigator.share({
                         title: t("shareTitle"),
                         // files:[file],
@@ -454,9 +457,8 @@ export default function SnakeGame(){
                     setAlter(true);
                     await navigator.clipboard.writeText(message);
                 }
-                console.log("分享成功！");
             } catch (err) {
-                console.log("使用者取消或發生錯誤", err);
+
             }
         } else {
             alert("你的瀏覽器不支援分享功能");
