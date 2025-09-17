@@ -1,26 +1,24 @@
 "use client"
 
-import { useState, useRef } from "react";
+import { useState, useRef, useContext, useEffect } from "react";
 import { usePathname } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
+import { DarkModeContext } from "@/context/DarkModeContext";
 // 轉換語系
 export default function LangChange(){
     // 切換路徑
     const locale = useLocale();
-    // 由於改用Link 所以不需要用這個轉跳了
-    // const router = useRouter();
     const pathName = usePathname();
-    // 轉換語言 (後續改用Link)
-    // const switchLocale = (newLocale:string) =>{
-    //     if(newLocale !== locale){
-    //         router.replace(pathName,{locale: newLocale});
-    //         router.refresh;
-    //     }
-    // }
+    // 抓取主題顏色
+    const {darkModeContext} = useContext(DarkModeContext);
     // 開關
     const [openLang, setOpenLang] = useState<boolean>(false);
     const openColdDown = useRef<boolean>(true);
+    // 導入語系
+    const t = useTranslations("menu")
+
     // 開關選單
     const SwithLangOpen = () =>{
         if(openColdDown.current === false) return ;
@@ -31,14 +29,13 @@ export default function LangChange(){
         },500)
     }
     
-
     return (
         <div className="flex flex-col md:flex-row p-[8px] md:px-[8px] gap-[8px] items-center text-center w-svw md:w-auto">
 
             <button type="button" className="md:hidden w-svw hover:bg-gray-400 dark:hover:bg-gray-700 p-[8px] cursor-pointer rounded-md
-                transition duration-500 ease-in-out md:duration-0
+                transition duration-500 ease-in-out md:duration-0 flex flex-row items-center justify-center gap-[8px]
             "
-                onClick={()=>{SwithLangOpen()}}>語系
+                onClick={()=>{SwithLangOpen()}}>{t("lang")}{  <img className={`transition duration-500 ease-in-out  ${openLang?"-rotate-x-180 ":""}`} src={`${darkModeContext?"/component/darkMode/Arrow_Dark":"/component/darkMode/Arrow_light"}.svg`} alt={`${openLang?"":""}`}></img>}
             </button>
 
             <ul className={`flex flex-col md:flex-row gap-[8px] overflow-hidden 

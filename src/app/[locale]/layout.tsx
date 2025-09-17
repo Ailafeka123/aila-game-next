@@ -6,14 +6,9 @@ import Footer from "@/component/footer";
 
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { routing } from "@/i18n/routing";
-// import { notFound } from "next/navigation";
 import { redirect } from 'next/navigation';
+import LoadingComponent from "@/component/LoadingComponent";
 
-// import { appWithTranslation } from 'next-i18next';
-// import type { ReactNode } from 'react';
-// import initTranslations from '@/i18n';
-
-// export const generateStaticParams = () => [{ locale: 'en' }, { locale: 'zh' }];
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,9 +33,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata>{
    }
 }
 
-//   Readonly<{
-//     children: React.ReactNode;
-// }>
 
 export default async function RootLayout({
   children,
@@ -55,7 +47,6 @@ export default async function RootLayout({
 
   if(!hasLocale(routing.locales, locale)){
     redirect("/zh");
-    // notFound();
   }
 
 
@@ -65,6 +56,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased scroll-smooth `}
       >
         <NextIntlClientProvider>
+          <LoadingComponent/>
           <Menu/>
           {children}
           <Footer/>

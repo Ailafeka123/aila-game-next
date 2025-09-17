@@ -1,5 +1,3 @@
-import SnakeGame from "@/component/snake/SnakeGame";
-
 export const siteMetaData ={
     index:{
 

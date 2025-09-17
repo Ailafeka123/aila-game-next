@@ -4,7 +4,8 @@
     },
     "menu":{
         "ticTacToe":"井字遊戲",
-        "snake":"貪吃蛇"
+        "snake":"貪吃蛇",
+        "lang":"語言"
     },
     "ticTacToe":{
         "title":"井字遊戲",

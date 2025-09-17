@@ -4,7 +4,8 @@
     },
     "menu":{
         "ticTacToe":"TicTacToe",
-        "snake":"Snake"
+        "snake":"Snake",
+        "lang":"Language"
     },
     "ticTacToe":{
         "title":"TicTacToe",
