@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef, memo, useMemo } from "react";
 import PhoneSmooth from "@/component/PhoneSmooth";
 import CreateImage from "@/component/createImage";
+import AlterComponent from "@/component/AlterComponent";
 import { useTranslations } from "next-intl";
 // 設定蛇的物件資料
 type snakeData = {
@@ -67,6 +68,8 @@ export default function SnakeGame(){
     const changeImageDiv = useRef<HTMLDivElement>(null);
     const [imgSrc, setImgSrc] = useState<string | null>(null);
 
+    const [alter,setAlter] = useState<boolean>(false);
+    const alterMessage = useRef<string>("");
 
     useEffect(()=>{
         setLoding(true)
@@ -434,16 +437,23 @@ export default function SnakeGame(){
     const handleShare = async () => {
         if (navigator.share) {
             try {
-                if (!imgSrc) return;
-                const response = await fetch(imgSrc);
-                const blob = await response.blob();
-                const file = new File([blob], "snake-map.png", { type: "image/png" });
-                await navigator.share({
-                    title: t("shareTitle"),
-                    files:[file],
-                    text: `${t("shareText")} ${getEndNumber.current[0]}`,
-                    url: window.location.href,
-                });
+                // if (!imgSrc) return;
+                // const response = await fetch(imgSrc);
+                // const blob = await response.blob();
+                // const file = new File([blob], "snake-map.png", { type: "image/png" });
+                if (navigator.canShare()){
+                    await navigator.share({
+                        title: t("shareTitle"),
+                        // files:[file],
+                        text: `${t("shareText")} ${getEndNumber.current[0]}`,
+                        url: window.location.href,
+                    });
+                }else{
+                    const message = `${t("shareText")} ${getEndNumber.current[0]}\n快來挑戰：${window.location.href}`;
+                    alterMessage.current = "已複製內容"
+                    setAlter(true);
+                    await navigator.clipboard.writeText(message);
+                }
                 console.log("分享成功！");
             } catch (err) {
                 console.log("使用者取消或發生錯誤", err);
@@ -497,7 +507,7 @@ export default function SnakeGame(){
                 </div>
             </div>
         </header>
-
+        {/* 遊戲區 */}
         <div className={`relative border  aspect-square w-full  md:w-[400px] md:h-[400px] bg-white dark:bg-gray-800`} id="game">
             <SnakeMap gameMap={gameMapData}/>
             <div className={`absolute ${gameState?"hidden":"flex"} w-full h-full top-0  items-center justify-center z-1 bg-white/50 dark:bg-gray-800/50 `}>
@@ -529,8 +539,10 @@ export default function SnakeGame(){
             </div>
         </div>
         }
+        {
+        }
         
-        
+        <AlterComponent  inputString ={alterMessage.current} showState={alter} onShowState={setAlter} />
         <PhoneSmooth useBoolean={phoneControl} moveState={0} onMove = {setPhoneMove} />
 
     </>)
