@@ -448,20 +448,22 @@ export default function SnakeGame(){
                     await navigator.share({
                         title: t("shareTitle"),
                         // files:[file],
-                        text: `${t("shareText")} ${getEndNumber.current[0]}`,
+                        text: `${t("shareText")} ${getEndNumber.current[0]} \n`,
                         url: window.location.href,
                     });
                 }else{
-                    const message = `${t("shareText")} ${getEndNumber.current[0]}\n快來挑戰：${window.location.href}`;
+                    const message = `${t("shareText")} ${getEndNumber.current[0]}\n ${window.location.href}`;
                     alterMessage.current = "已複製內容"
                     setAlter(true);
                     await navigator.clipboard.writeText(message);
                 }
             } catch (err) {
-
+                alterMessage.current = "發生錯誤  請稍後再嘗試"
+                setAlter(true);
             }
         } else {
-            alert("你的瀏覽器不支援分享功能");
+            alterMessage.current = "您的瀏覽器 不支援此功能"
+            setAlter(true);
         }
     };
 
