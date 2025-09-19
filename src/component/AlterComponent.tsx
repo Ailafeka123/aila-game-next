@@ -1,4 +1,4 @@
-'use clinet'
+'use client'
 
 import { useState,useEffect } from "react"
 import { memo } from "react"

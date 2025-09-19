@@ -1,6 +1,24 @@
 {   "index":{
-        "title":"Index Title",
-        "description":"index description"
+        "title":"Introduction",
+        "description":"I'm developing a small game website as a practice project, built entirely with Next.js and featuring a bilingual system powered by i18n. You're welcome to explore and play!",
+        "cards":[
+           {
+                "slug":"/ticTacToe",
+                "gameName":"TicTacToe",
+                "description":"Challenge your friends or the computer — get three in a row to win!",
+                "gameImgLight":"/index/ticTacToe_light.png",
+                "gameImgDark":"/index/ticTacToe_dark.png",
+                "more":"more..."
+            },
+            {
+                "slug":"/snake",
+                "gameName":"Snake",
+                "description":"The classic food-eating game — go for the highest score!",
+                "gameImgLight":"/index/snake_light.png",
+                "gameImgDark":"/index/snake_dark.png",
+                "more":"more..."
+            }
+        ]
     },
     "menu":{
         "ticTacToe":"TicTacToe",
@@ -36,6 +54,23 @@
         "gameOver1": "The game ends when the snake's head hits the screen wall.",
         "gameOver2": "The game ends when the snake's head collides with its own body.",
         "shareTitle":"Aila-GameWeb-Snake",
-        "shareText":"My score is"
+        "shareText":"My score is",
+        "score":"score",
+        "speed":"speed",
+        "MapSize":"Map size",
+        "select":"Select Difficulty",
+        "eazy":"Eazy",
+        "medium":"Medium",
+        "hard":"Hard",
+        "start":"Game Start",
+        "gameOverCard":"Game Over",
+        "dead":"Cause of Death:",
+        "wall":"Hit the Wall",
+        "eat":"Bit Yourself",
+        "finalScore":"Final Score",
+        "MaxScore":"High Score",
+        "close":"close",
+        "share":"share"
+
     }
 }

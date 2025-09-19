@@ -1,6 +1,24 @@
 {   "index":{
-        "title":"首頁標題",
-        "description":"首頁說明"
+        "title":"簡介",
+        "description":"我正在開發一個練習用的小遊戲網站，整個專案使用 Next.js 製作，並搭配 i18n 實現雙語系統。歡迎體驗與試玩！",
+        "cards":[
+            {
+                "slug":"/ticTacToe",
+                "gameName":"井字遊戲",
+                "description":"挑戰朋友或電腦，連成三子獲勝！",
+                "gameImgLight":"/index/ticTacToe_light.png",
+                "gameImgDark":"/index/ticTacToe_dark.png",
+                "more":"點擊前往..."
+            },
+            {
+                "slug":"/snake",
+                "gameName":"貪吃蛇",
+                "description":"經典吃食物遊戲，挑戰最高分！",
+                "gameImgLight":"/index/snake_light.png",
+                "gameImgDark":"/index/snake_dark.png",
+                "more":"點擊前往..."
+            }
+        ]
     },
     "menu":{
         "ticTacToe":"井字遊戲",
@@ -36,6 +54,22 @@
         "gameOver1":"當蛇的頭部碰到螢幕的牆壁時，遊戲結束。",
         "gameOver2":"當蛇的頭部碰到自己的身體時，遊戲結束。",
         "shareTitle":"艾拉遊戲網-貪吃蛇",
-        "shareText":"我的得分是"
+        "shareText":"我的得分是",
+        "score":"目前得分",
+        "speed":"速度",
+        "MapSize":"地圖大小",
+        "select":"選擇難度",
+        "eazy":"簡單",
+        "medium":"普通",
+        "hard":"困難",
+        "start":"開始",
+        "gameOverCard":"遊戲結束",
+        "dead":"死亡原因:",
+        "wall":"撞到牆",
+        "eat":"咬到自己",
+        "finalScore":"最終得分",
+        "MaxScore":"最高得分",
+        "close":"關閉",
+        "share":"分享"
     }
 }

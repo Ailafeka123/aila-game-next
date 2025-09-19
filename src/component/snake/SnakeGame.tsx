@@ -475,19 +475,19 @@ export default function SnakeGame(){
             <div className="w-full md:w-[400px]  flex flex-row items-center justify-around ">
 
                 <div className="flex flex-row items-center flex-1">
-                    <p className="flex-1 text-center">選擇難度:</p>
+                    <p className="flex-1 text-center">{t("select")}</p>
                 </div>
                 <div className="relative flex flex-col flex-1 w-full text-center">
 
                     <div className={` gap-[4px] bg-white dark:bg-gray-800  px-[8px] py-[4px] rounded-md border-2 ${gameState === true?"cursor-no-drop" :"hover:bg-gray-400 dark:hover:bg-gray-700 cursor-pointer" }`} onClick={()=>{openGameModeList()}}>
-                        <p >{gameMode === 0?"簡單": gameMode === 1 ? "普通" : "困難"}</p>
+                        <p >{gameMode === 0?t("eazy"): gameMode === 1 ? t("medium") : t("hard") }</p>
                     </div>
 
                     <div className={`absolute z-2 grid gap-[4px] bg-white dark:bg-gray-800 top-full translate-y-[8px] w-full  text-center transition-all duration-300 ease-in-out overflow-hidden ${gameModeSelect?"border-2":""} `} style={{ gridTemplateRows:` ${gameModeSelect?"1fr":"0fr"}`}} >
                         <div className="overflow-hidden flex flex-col w-full ">
-                            <p data-value = {0} onClick={(e)=>{gameModeChange((e.target as HTMLElement).dataset.value) }} className=" px-[8px] py-[4px] rounded-md  hover:bg-gray-400 dark:hover:bg-gray-700 cursor-pointer">簡單</p>
-                            <p data-value = {1} onClick={(e)=>{gameModeChange((e.target as HTMLElement).dataset.value) }} className=" px-[8px] py-[4px] rounded-md  hover:bg-gray-400 dark:hover:bg-gray-700 cursor-pointer">普通</p>
-                            <p data-value = {2} onClick={(e)=>{gameModeChange((e.target as HTMLElement).dataset.value) }} className=" px-[8px] py-[4px] rounded-md  hover:bg-gray-400 dark:hover:bg-gray-700 cursor-pointer">困難</p>
+                            <p data-value = {0} onClick={(e)=>{gameModeChange((e.target as HTMLElement).dataset.value) }} className=" px-[8px] py-[4px] rounded-md  hover:bg-gray-400 dark:hover:bg-gray-700 cursor-pointer">{t("eazy")}</p>
+                            <p data-value = {1} onClick={(e)=>{gameModeChange((e.target as HTMLElement).dataset.value) }} className=" px-[8px] py-[4px] rounded-md  hover:bg-gray-400 dark:hover:bg-gray-700 cursor-pointer">{t("medium")}</p>
+                            <p data-value = {2} onClick={(e)=>{gameModeChange((e.target as HTMLElement).dataset.value) }} className=" px-[8px] py-[4px] rounded-md  hover:bg-gray-400 dark:hover:bg-gray-700 cursor-pointer">{t("hard")}</p>
                         </div>
                     </div>
 
@@ -498,15 +498,15 @@ export default function SnakeGame(){
 
             <div className=" flex flex-row items-center justify-around border w-full text-center ">
                 <div className="flex-1 h-full border">
-                    <p>得分</p>
+                    <p>{t("score")}</p>
                     <p>{snakeData.current.getScore}</p>
                 </div>
                 <div className="flex-1 h-full border">
-                    <p>速度</p>
+                    <p>{t("speed")}</p>
                     <p>{`${snakeData.current.speed}/s`}</p>
                 </div>
                 <div className="flex-1 h-full border">
-                    <p>地圖大小</p>
+                    <p>{t("MapSize")}</p>
                     <p>{`${gameSize} X ${gameSize}`}</p>
                 </div>
             </div>
@@ -517,7 +517,7 @@ export default function SnakeGame(){
             <div className={`absolute ${gameState?"hidden":"flex"} w-full h-full top-0  items-center justify-center z-1 bg-white/50 dark:bg-gray-800/50 `}>
                 <button type="button" className="bg-white dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700 p-[16px] border-2 cursor-pointer rounded-md"
                     onClick={()=>{setGameState(true)}}
-                >開始</button>
+                >{t("start")}</button>
             </div>
         </div>
         {/* 遊戲結束結算畫面 */}
@@ -527,18 +527,18 @@ export default function SnakeGame(){
             w-full max-w-[550px] aspect-square md:w-auto border-2 rounded-md -translate-1/2 z-1000 
             flex flex-col items-center justify-around gap-[8px] bg-white dark:bg-gray-800 
             p-[16px]`} >
-                <h3>遊戲結束</h3>
-                <p>死亡原因:{gameEnd === 0? "撞到牆" : gameEnd === 1? "咬到身體" : "不明"}</p>
+                <h3>{t("gameOverCard")}</h3>
+                <p>{t("dead")}{gameEnd === 0? t("wall") : gameEnd === 1? t("eat") : "error"}</p>
                 <div className="flex flex-row gap-[8px]">
-                    <p>最終得分:{`${getEndNumber.current[0]}`}</p>
-                    <p>最高得分:{`${getEndNumber.current[1]}`}</p>
+                    <p>{t("finalScore")}:{`${getEndNumber.current[0]}`}</p>
+                    <p>{t("MaxScore")}:{`${getEndNumber.current[1]}`}</p>
                 </div>
                 <div ref = {changeImageDiv} className="aspect-square w-full max-w-[500px]">
                     <SnakeMap gameMap={endMap.current}  ></SnakeMap>
                 </div>
                 <div className="flex flex-row w-full items-center justify-around">
-                    <button type="button" className=" bg-white dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700 border-2 px-[8px] py-[4px] cursor-pointer rounded-md" onClick={()=>{setGameEnd(-1)}}>關閉</button>
-                    <button type="button" className=" bg-white dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700 border-2 px-[8px] py-[4px] cursor-pointer rounded-md" onClick={()=>{handleShare()}}>分享按鈕</button>
+                    <button type="button" className=" bg-white dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700 border-2 px-[8px] py-[4px] cursor-pointer rounded-md" onClick={()=>{setGameEnd(-1)}}>{t("close")}</button>
+                    <button type="button" className=" bg-white dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700 border-2 px-[8px] py-[4px] cursor-pointer rounded-md" onClick={()=>{handleShare()}}>{t("share")}</button>
                 </div>
             </div>
         </div>
