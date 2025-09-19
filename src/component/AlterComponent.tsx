@@ -9,20 +9,22 @@ type inputStringType = {
 }
 
 const AlterComponent = memo( ({inputString,showState,onShowState} :inputStringType) =>{
-    const [move,setMove] = useState<boolean>(true);
+    const [moveIn ,setMoveIn] = useState<boolean>(false);
     useEffect(()=>{
-        setMove(true);
+        setMoveIn(true);
+        setTimeout(()=>{
+            setMoveIn(false)
+        },2000)
         if(showState === false) return;
  
         setTimeout(()=>{
             onShowState(false);
-        },2000)
+        },2500)
     },[showState])
     return (
         <div className= {`
             fixed top-9/12 left-1/2 p-[16px] bg-white dark:bg-gray-800 z-1001 border-1 rounded-md 
-            transition duration-500 ${showState ? "opacity-100" : "opacity-0"} ${move === true && showState === true ? "-translate-x-1/2 -translate-y-0":"-translate-x-1/2 -translate-y-1/2"}
-        `}>
+            transition duration-500   ${moveIn ? "opacity-100 -translate-x-1/2 -translate-y-0" : "opacity-0 -translate-x-1/2 -translate-y-1/2"} `}>
             <p>{inputString}</p>
         </div>
     )

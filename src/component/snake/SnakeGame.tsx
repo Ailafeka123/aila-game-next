@@ -546,7 +546,8 @@ export default function SnakeGame(){
         {
         }
         
-        <AlterComponent  inputString ={alterMessage.current} showState={alter} onShowState={setAlter} />
+        {alter && <AlterComponent  inputString ={alterMessage.current} showState={alter} onShowState={setAlter} />}
+
         <PhoneSmooth useBoolean={phoneControl} moveState={0} onMove = {setPhoneMove} />
 
     </>)
